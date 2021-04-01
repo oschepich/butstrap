@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.format.sql",
+      "type": "java.lang.String",
+      "description": "Description for spring.format.sql."
+  }
+] }

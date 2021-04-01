@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title> User page </title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+</head>
+<header>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <span class="navbar-brand">
+            <b><span th:text="${user.email}"></span></b>
+                <span> with roles: </span>
+                <span th:each="userRole: ${user.roles}">
+                     <span th:text="${userRole.getRole()}"></span>
+                </span>
+        </span>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <ul class="navbar-nav nav-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<body>
+<div class="d-flex align-items-start">
+    <div class="container-fluid" style="padding-left: 0; padding-right: 0">
+        <div class="row no-gutters">
+            <div class="col-2">
+                <br>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile"
+                       role="tab"
+                       aria-controls="v-pills-profile" aria-selected="false">User</a>
+                </div>
+            </div>
+            <div class="col-10"
+                 style=" height: 100vh; background-color:ghostwhite; padding-left: 50px; padding-right: 50px">
+                <!--окно текущкго user    -->
+                <br>
+                <h1>User information-page</h1>
+                <br>
+                <div class="tab-content border rounded bg-white " id="myTabContent">
+                    <div class="tab-pane fade show active " id="home" role="tabpanel"
+                         aria-labelledby="home-tab">
+                        <div class="card-header font-weight-bold">
+                            <h5 style="padding-left: 20px">About user</h5>
+                        </div>
+                        <div class="tab-content-smoll text-center"
+                             style="background-color:white">
+                            <div class="card-body">
+                                <table class="table table-striped text-center" style="background-color: white">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.firstName}"></td>
+                                        <td th:text="${user.lastName}"></td>
+                                        <td th:text="${user.age}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td>
+                                            <p th:each="userRole: ${user.roles}">
+                                                <span th:text="${userRole.getRole()}"></span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
