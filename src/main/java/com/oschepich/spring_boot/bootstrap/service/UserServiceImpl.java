@@ -43,13 +43,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void saveUser(User user) {
-            if (user.getPassword()==""){
+
+        if (!user.getEmail().equals(userRepository.findUserByEmail(user.getEmail()))){
+            if (user.getPassword().equals("")) {
                 user.setPassword(userRepository.findUserByEmail(user.getEmail()).getPassword());
-            }
-            else {
+            } else {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
             }
-            userRepository.save(user);
+        userRepository.save(user);
+        }
    }
 
     //  метод нахождения одного user-а в списке
@@ -72,7 +74,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public Role getRole(String role) {
-        return roleRepository.findRoleByRole(role);
+        return roleRepository.findByRole(role);
     }
 
     @Override

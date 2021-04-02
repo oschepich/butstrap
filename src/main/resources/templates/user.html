@@ -17,7 +17,7 @@
             <b><span th:text="${user.email}"></span></b>
                 <span> with roles: </span>
                 <span th:each="userRole: ${user.roles}">
-                     <span th:text="${userRole.getRole()}"></span>
+                     <span th:text="${#strings.substringAfter(userRole.getRole(),'_')+'  '}"></span>
                 </span>
         </span>
         <div class="collapse navbar-collapse" id="navbarText">
@@ -77,9 +77,9 @@
                                         <td th:text="${user.age}"></td>
                                         <td th:text="${user.email}"></td>
                                         <td>
-                                            <p th:each="userRole: ${user.roles}">
-                                                <span th:text="${userRole.getRole()}"></span>
-                                            </p>
+                                            <th:block th:each="userRole: ${user.roles}">
+                                                <span th:text="${#strings.substringAfter(userRole.getRole(),'_')}"></span>
+                                            </th:block>
                                         </td>
                                     </tr>
                                     </tbody>

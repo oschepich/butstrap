@@ -24,7 +24,7 @@
             <b><span th:text="${tecUser.getEmail()}"></span></b>
                 <span> with roles: </span>
                 <span th:each="userRole: ${tecUser.roles}">
-                     <span th:text="${userRole.getRole()}"></span>
+                     <span th:text="${#strings.substringAfter(userRole.getRole(),'_')+'  '}"></span>
                 </span>
         </span>
         <div class="collapse navbar-collapse" id="navbarText">
@@ -102,9 +102,9 @@
                                                 <td th:text="${user.age}"></td>
                                                 <td th:text="${user.email}"></td>
                                                 <td>
-                                                    <p th:each="userRole: ${user.roles}">
-                                                        <span th:text="${userRole.getRole()}"></span>
-                                                    </p>
+                                                    <th:block th:each="userRole: ${user.roles}">
+                                                        <span th:text="${#strings.substringAfter(userRole.getRole(),'_')}"></span>
+                                                    </th:block>
                                                 </td>
                                                 <td>
                                                     <div class="col-small">
@@ -281,12 +281,10 @@
                                                                                                     name="roleSet"
                                                                                                     class="form-control"
                                                                                                     id="exampleRoleSelectDelete">
-                                                                                                <option value="ROLE_ADMIN">
-                                                                                                    ADMIN
+                                                                                                <p th:each="userRole: ${user.roles}">
+                                                                                                <option th:text="${#strings.substringAfter(userRole.getRole(),'_')}">
                                                                                                 </option>
-                                                                                                <option value="ROLE_USER">
-                                                                                                    USER
-                                                                                                </option>
+                                                                                                </p>
                                                                                             </select>
                                                                                         </div>
                                                                                         <br>
@@ -337,19 +335,20 @@
                                                     <label for="firstname" class="font-weight-bold">First
                                                         Name</label>
                                                     <input id="firstname" th:type="text" th:name="firstName"
-                                                           class="form-control bg-warning text-dark">
+                                                           class="form-control bg-warning text-dark"
+                                                           placeholder="First Name">
                                                     <label for="lastname" class="font-weight-bold">Last Name</label>
                                                     <input id="lastname" th:type="text" th:name="lastName"
-                                                           class="form-control bg-warning text-dark">
+                                                           class="form-control bg-warning text-dark" placeholder="Last Name">
                                                     <label for="age" class="font-weight-bold">Age</label>
                                                     <input id="age" th:type="number" th:name="age"
-                                                           class="form-control bg-warning text-dark">
+                                                           class="form-control bg-warning text-dark" placeholder="Age">
                                                     <label for="email" class="font-weight-bold">Email</label>
-                                                    <input id="email" th:type="email" th:name="email"
-                                                           class="form-control bg-warning text-dark">
+                                                    <input required id="email" th:type="email" th:name="email"
+                                                           class="form-control bg-warning text-dark" placeholder="Email address">
                                                     <label for="password" class="font-weight-bold">Password</label>
-                                                    <input id="password" type="password" th:name="password"
-                                                           class="form-control bg-warning text-dark">
+                                                    <input required id="password" type="password" th:name="password"
+                                                           class="form-control bg-warning text-dark" placeholder="Password">
                                                     <div class="form-group text-center">
                                                         <label class="font-weight-bold"
                                                                for="exampleRoleSelect">Role</label>
@@ -407,9 +406,9 @@
                                             <td th:text="${tecUser.age}"></td>
                                             <td th:text="${tecUser.email}"></td>
                                             <td>
-                                                <p th:each="userRole: ${tecUser.roles}">
-                                                    <span th:text="${userRole.getRole()}"></span>
-                                                </p>
+                                                <th:block th:each="userRole: ${tecUser.roles}">
+                                                    <span th:text="${#strings.substringAfter(userRole.getRole(),'_')}"></span>
+                                                </th:block>
                                             </td>
                                         </tr>
                                         </tbody>
