@@ -16,9 +16,7 @@ public interface UserService<T>{
 
      void deleteUser(Long id);
 
-    Role getRole(String name);
-
-    public List<Role> getListRole();
+    User findUserByEmail(String email);
 
     UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
 

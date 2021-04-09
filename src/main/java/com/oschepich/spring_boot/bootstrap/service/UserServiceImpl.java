@@ -2,8 +2,8 @@ package com.oschepich.spring_boot.bootstrap.service;
 
 import com.oschepich.spring_boot.bootstrap.model.Role;
 import com.oschepich.spring_boot.bootstrap.model.User;
-import com.oschepich.spring_boot.bootstrap.repository.RoleRepository;
 import com.oschepich.spring_boot.bootstrap.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -22,14 +21,13 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
+
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
@@ -41,26 +39,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     //  метод добавления или изменение одного user-а в список(ке)
     @Override
-    @Transactional
-    public void saveUser(User user) {
 
-        if (!user.getEmail().equals(userRepository.findUserByEmail(user.getEmail()))){
+    public void saveUser(User user) {
+        if (userRepository.findUserByEmail(user.getEmail()) != null) {
             if (user.getPassword().equals("")) {
                 user.setPassword(userRepository.findUserByEmail(user.getEmail()).getPassword());
-            } else {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
             }
-        userRepository.save(user);
         }
-   }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
 
     //  метод нахождения одного user-а в списке
     @Override
     public User show(Long id) {
-        User user=null;
-        Optional <User> optional=userRepository.findById(id);
-        if (optional.isPresent()){
-            user=optional.get();
+        User user = null;
+        Optional<User> optional = userRepository.findById(id);
+        if (optional.isPresent()) {
+            user = optional.get();
         }
         return user;
     }
@@ -69,17 +65,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
-    }
-
-    @Override
-    @Transactional
-    public Role getRole(String role) {
-        return roleRepository.findByRole(role);
-    }
-
-    @Override
-    public List<Role> getListRole() {
-        return roleRepository.findAll();
     }
 
     // «Пользователь» – это просто Object. В большинстве случаев он может быть
@@ -99,4 +84,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), grantedAuthorities);
     }
 
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
 }
